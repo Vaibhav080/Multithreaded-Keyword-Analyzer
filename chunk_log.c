@@ -19,7 +19,7 @@ void *search_chunk(void *arg) {
     ThreadData *data = (ThreadData *)arg;
 
     // Open file in binary mode for reliable ftell and fseek
-    FILE *file = fopen(data->filename, "rb"); // CHANGED
+    FILE *file = fopen(data->filename, "rb"); 
     if (!file) {
         perror("File open error");
         pthread_exit(NULL);
@@ -28,7 +28,7 @@ void *search_chunk(void *arg) {
     fseek(file, data->start, SEEK_SET);
 
     // Skip partial line if not at the start
-    if (data->start != 0) {  // FIXED
+    if (data->start != 0) {  
         char c;
         while (fread(&c, 1, 1, file) == 1 && c != '\n');
     }
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Open in binary mode for accurate file size
-    FILE *file = fopen(filename, "rb"); // CHANGED
+    FILE *file = fopen(filename, "rb"); 
     if (!file) {
         perror("File error");
         return 1;
@@ -89,8 +89,7 @@ int main(int argc, char *argv[]) {
         data[i].end = (i == num_threads - 1) ? file_size : (i + 1) * chunk_size;
         data[i].count = 0;
 
-        // Check pthread_create return value
-        if (pthread_create(&threads[i], NULL, search_chunk, &data[i]) != 0) { // FIXED
+        if (pthread_create(&threads[i], NULL, search_chunk, &data[i]) != 0) { 
             perror("Thread creation failed");
             return 1;
         }
